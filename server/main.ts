@@ -1,22 +1,44 @@
-import express from 'express'
-import http from 'http'
-import {ApolloServer} from 'apollo-server-express'
-import {ApolloServerPluginDrainHttpServer} from 'apollo-server-core'
-import schema from './schema'
+import { GraphQLHTTP } from "jsr:@deno-libs/gql";
 
-async function startApolloServer() {
-  const app = express()
-  const httpServer = http.createServer(app)
-  const server = new ApolloServer({
-    schema,
-    plugins: [ApolloServerPluginDrainHttpServer({httpServer})],
-  })
-  await server.start()
-  server.applyMiddleware({app})
-  // eslint-disable-next-line no-promise-executor-return
-  await new Promise<void>((resolve) => httpServer.listen({port: 8000}, resolve))
-  // eslint-disable-next-line no-console
-  console.log(`🚀 Server ready at http://localhost:8000${server.graphqlPath}`)
+import schema from "./schema.ts";
+
+function setCORS(response: Response): Response {
+  const headers = new Headers(response.headers);
+  headers.set("Access-Control-Allow-Origin", "*");
+  headers.set(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS",
+  );
+  headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
 }
 
-startApolloServer()
+const handler = async (req: Request) => {
+  if (req.method === "OPTIONS") {
+    return setCORS(new Response(null));
+  }
+
+  const { pathname } = new URL(req.url);
+
+  const response =
+    pathname === "/graphql"
+      ? await GraphQLHTTP<Request>({
+          schema,
+          graphiql: true,
+        })(req)
+      : new Response("Not Found", { status: 404 });
+
+  return setCORS(response);
+};
+
+Deno.serve(
+  {
+    port: 8000,
+  },
+  handler,
+);

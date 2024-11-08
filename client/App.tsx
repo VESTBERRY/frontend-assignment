@@ -1,10 +1,13 @@
-import {ApolloProvider} from '@apollo/client'
-import styled, {createGlobalStyle, ThemeProvider} from 'styled-components'
-import theme from '@client/theme'
-import {ReactComponent as LogoSvg} from '@assets/vestberry-logo.svg'
+import { ApolloProvider } from "@apollo/client";
+import styled, {
+  createGlobalStyle,
+  ThemeProvider,
+} from "npm:styled-components";
+import theme from "./theme.ts";
+import LogoSvg from "../assets/vestberry-logo.svg?react";
 
-import client from '@client/apollo'
-import Page from '@client/Page'
+import client from "./apollo.ts";
+import Page from "./Page.tsx";
 
 const GlobalStyles = createGlobalStyle`
   body {
@@ -17,15 +20,15 @@ const GlobalStyles = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-`
+`;
 
 const Logo = styled(LogoSvg)`
   height: 10px;
-`
+`;
 
 const Header = styled.header`
   padding: 20px;
-`
+`;
 
 function App() {
   return (
@@ -40,7 +43,7 @@ function App() {
         </ThemeProvider>
       </ApolloProvider>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
