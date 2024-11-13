@@ -42,14 +42,15 @@ export function Page() {
           </tr>
         </thead>
         <tbody>
-          {companies?.map((company) => (
-            <tr key={company.id}>
-              <td>{company.name}</td>
-              <td>{company.stage}</td>
-              <td>{company.sector}</td>
-              <td>{company.investmentSize}</td>
-            </tr>
-          )) ?? null}
+          {companies?.length &&
+            companies?.map((company) => (
+              <tr>
+                <td>{company.name}</td>
+                <td>{company.stage}</td>
+                <td>{company.sector}</td>
+                <td>{company.investmentSize}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </Container>
