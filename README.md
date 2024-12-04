@@ -52,8 +52,10 @@ Your task is to create a simple page with a table of companies and a chart indic
 
 ## Requirements
  (tested on)
-* node `^17.4.0`
-* yarn `^1.22.17` or npm `^8.3.1`
+Just install Deno 2 if you don't have it already
+```
+curl -fsSL https://deno.land/install.sh | sh
+```
 <br />
 <br />
 
@@ -66,11 +68,7 @@ $ git clone git@github.com:andylacko/frontend-assignment.git <directory>
 $ cd <directory>
 ```
 
-When that's done, install the project dependencies.
-
-```bash
-$ npm i  # Install project dependencies (or `yarn`)
-```
+There is no need to install dependencies
 <br />
 <br />
 
@@ -79,18 +77,18 @@ $ npm i  # Install project dependencies (or `yarn`)
 After completing the [installation](#installation) step, you're ready to start the project!
 
 ```bash
-$ npm start  # Start the development server (or `yarn start`)
+$ deno task dev  # Start the development server
 ```
 
 While developing, you will probably rely mostly on `yarn start` or `npm start`; however, there are additional scripts at your disposal:
 
-|`npm run <script>`        |Description|
+|`command`        |Description|
 |-----------------------|-----------|
-|`start`                |Serves your app at `localhost:3000`|
-|`dev:client`           |Starts the frontend part|
-|`dev:server`           |Starts the backend part|
-|`lint`                 |[Lints](http://stackoverflow.com/questions/8503559/what-is-linting) the project for potential errors|
-|`lint:fix`             |Lints the project and [fixes all correctable errors](http://eslint.org/docs/user-guide/command-line-interface.html#fix)|
+|`deno task dev`                |Serves your app at `localhost:3000`|
+|`deno task dev:client`           |Starts the frontend part|
+|`deno task dev:server`           |Starts the backend part|
+|`deno lint`       | [Lints](http://stackoverflow.com/questions/8503559/what-is-linting) the project for potential errors      |
+|`deno lint --fix` | Lints the project and [fixes all correctable errors](https://docs.deno.com/runtime/reference/cli/linter/) |
 
 <br />
 <br />

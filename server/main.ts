@@ -1,22 +1,28 @@
-import express from 'express'
-import http from 'http'
-import {ApolloServer} from 'apollo-server-express'
-import {ApolloServerPluginDrainHttpServer} from 'apollo-server-core'
-import schema from './schema'
+import { createYoga } from "npm:graphql-yoga@4.0.4";
+import { schema } from "./schema.ts";
 
-async function startApolloServer() {
-  const app = express()
-  const httpServer = http.createServer(app)
-  const server = new ApolloServer({
-    schema,
-    plugins: [ApolloServerPluginDrainHttpServer({httpServer})],
-  })
-  await server.start()
-  server.applyMiddleware({app})
-  // eslint-disable-next-line no-promise-executor-return
-  await new Promise<void>((resolve) => httpServer.listen({port: 8000}, resolve))
-  // eslint-disable-next-line no-console
-  console.log(`🚀 Server ready at http://localhost:8000${server.graphqlPath}`)
-}
+// Create Yoga server
+const yoga = createYoga({
+  schema,
+  graphiql: true,
+  cors: {
+    origin: "*",
+    credentials: true,
+    methods: ["POST", "GET", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  },
+  fetchAPI: {
+    Request: Request,
+    Response: Response,
+  },
+});
 
-startApolloServer()
+// Start server using Deno
+Deno.serve(
+  {
+    port: 8000,
+  },
+  yoga,
+);
+
+console.log(`🚀 Server running at http://localhost:8000/graphql`);
